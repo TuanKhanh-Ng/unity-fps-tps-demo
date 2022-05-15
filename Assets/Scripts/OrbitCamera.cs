@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class OrbitCamera : MonoBehaviour
 {
-    [SerializeField] private GameObject target;
+    [SerializeField] private Transform target;
 
     public float rotationSpeed = 10.0f;
 
@@ -13,7 +13,7 @@ public class OrbitCamera : MonoBehaviour
     void Start()
     {
         rotY = 0;
-        initialOffset = target.transform.position - transform.position;
+        initialOffset = target.position - transform.position;
     }
 
     void LateUpdate()
@@ -21,7 +21,7 @@ public class OrbitCamera : MonoBehaviour
         rotY += Input.GetAxis("Mouse X") * rotationSpeed;
 
         Quaternion rotation = Quaternion.Euler(0, rotY, 0);
-        transform.position = target.transform.position - (rotation * initialOffset);
+        transform.position = target.position - (rotation * initialOffset);
         transform.LookAt(target.transform.position);
     }
 }
