@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private Transform target;
 
+    public float rotationSpeed = 15.0f;
     public float groundMoveSpeed = 5.0f;
 
     private Vector3 movement;
@@ -33,6 +34,14 @@ public class PlayerController : MonoBehaviour
             movement = target.TransformDirection(movement);
 
             target.rotation = initialRotation;
+
+            // Rotate the character to look at the direction of the camera
+            if (movement.magnitude > 0)
+            {
+                Vector3 forward = new Vector3(target.forward.x, 0, target.forward.z);
+                Quaternion rotation = Quaternion.LookRotation(forward);
+                transform.rotation = Quaternion.Lerp(transform.rotation, rotation, rotationSpeed * Time.deltaTime);
+            }
         }
         movement *= Time.deltaTime;
         _charController.Move(movement);
